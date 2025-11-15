@@ -24,7 +24,13 @@ public:
 protected:
   // Please add any additional state to the ByteStream here, and not to the Writer and Reader interfaces.
   uint64_t capacity_;
-  bool error_ {};
+  bool error_ { false };
+  bool is_closed_ { false };
+  // 用一个字符串作为缓冲区
+  std::string buffer_ {};
+  // 要保持reader和writer状态同步，所以放在ByteStream里
+  uint64_t total_bytes_pushed_ {};
+  uint64_t total_bytes_popped_ {};
 };
 
 class Writer : public ByteStream

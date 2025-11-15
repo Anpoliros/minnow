@@ -11,6 +11,24 @@ using namespace std;
 namespace {
 void get_URL( const string& host, const string& path )
 {
+  TCPSocket sock;
+  sock.connect(Address(host, "http"));
+  string req = "GET " + path + " HTTP/1.1\r\n"
+		"Host: " + host + "\r\n"
+		"Connection: Close\r\n"
+		"\r\n";
+  sock.write(req);
+  while(true){
+    string response;
+    sock.read(response);
+    // when get EOF, stop reading and printing
+    // "a single call to read is not enough"
+    if(response.empty()){
+      break;
+    }
+    cout<<response;
+  }
+  
   debug( "Function called: get_URL( \"{}\", \"{}\" )", host, path );
   debug( "get_URL() function not yet implemented" );
 }
